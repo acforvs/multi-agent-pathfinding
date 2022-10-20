@@ -2,7 +2,7 @@
 name = "multi-agent-pathfinding"
 version = "0.1.0"
 description = "Partially observable / decentralized multi-agent pathfinding in Grid Environments using Reinforcement Learning"
-authors = ["Vlad Savinov <vlad.al.savinov@gmail.com>"]
+authors = ["Vlad Savinov <vlad.al.savinov@gmail.com>", "Nikita Morozov <app1606@icloud.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "multi_agent_pathfinding"}]
