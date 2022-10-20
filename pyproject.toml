@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "multi-agent-pathfinding"
+version = "0.1.0"
+description = "Partially observable / decentralized multi-agent pathfinding in Grid Environments using Reinforcement Learning"
+authors = ["Vlad Savinov <vlad.al.savinov@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "multi_agent_pathfinding"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pogema = "^1.1.2"
+torch = "^1.12.1"
+
+[tool.poetry.group.dev.dependencies]
+pogema = "^1.1.2"
+torch = "^1.12.1"
+black = "^22.10.0"
+fire = "^0.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
