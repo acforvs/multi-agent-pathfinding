@@ -1,9 +1,4 @@
-import fire
-
-
-def hello(name):
-    return f"Hello, {name}"
-
+from pathfinding.models.dhc import DHCNetwork
 
 if __name__ == "__main__":
-    fire.Fire()
+    DHCNetwork()

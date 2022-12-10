@@ -1,0 +1,14 @@
+dhc:
+  cnn_channels: 128
+  fov: !!python/tuple [9, 9]
+  observation_radius: 4  # since the FOV is 9x9
+  observation_shape: !!python/tuple [6, 9, 9]
+  hidden_dim: 256
+  max_comm_agents: 3 # includes the agent itself
+  batch_size: 192
+  max_num_agents: 2
+  latent_dim: 784  # 16 * 7 * 7, do not forget to change if the observation_shape is changed
+
+  communication:
+    num_comm_layers: 2
+    num_comm_heads: 2
