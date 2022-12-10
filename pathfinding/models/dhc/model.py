@@ -67,7 +67,7 @@ class MultiHeadAttention(nn.Module):
             attn_mask = attn_mask.unsqueeze(0)
         assert (
             attn_mask.size(0) == batch_size
-        ), "mask dim {} while batch size {}".format(attn_mask.size(0), batch_size)
+        ), f"mask dim {attn_mask.size(0)} while batch size {batch_size}"
 
         attn_mask = attn_mask.unsqueeze(1).repeat_interleave(
             self.num_heads, 1
