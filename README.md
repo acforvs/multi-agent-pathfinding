@@ -14,19 +14,22 @@
 ```shell
 poetry run black dir
 ```
+2. Make sure tests are OK 
+```shell
+poetry run pytest
+```
+3. Create a PR with new features
+
 
 ## References
 
 <a id="1">[1]</a> 
 Sartoretti, G., Kerr, J., Shi, Y., Wagner, G., Kumar, T.S., Koenig, S. and Choset, H., 2019. Primal: Pathfinding via reinforcement and imitation multi-agent learning. IEEE Robotics and Automation Letters, 4(3), pp.2378-2385.
 
-<a id="2">[2]</a>
-Damani, M., Luo, Z., Wenzel, E. and Sartoretti, G., 2021. PRIMAL $ _2 $: Pathfinding via reinforcement and imitation multi-agent learning-lifelong. IEEE Robotics and Automation Letters, 6(2), pp.2666-2673.
+<a id="2">[2]</a> 
+Ma, Ziyuan and Luo, Yudong and Ma, Hang, 2021. Distributed Heuristic Multi-Agent Path Finding with Communication.
 
 <a id="3">[3]</a>
-Riviere, B., Hönig, W., Yue, Y. and Chung, S.J., 2020. Glas: Global-to-local safe autonomy synthesis for multi-robot motion planning with end-to-end learning. IEEE Robotics and Automation Letters, 5(3), pp.4249-4256.
-
-<a id="4">[4]</a>
 Skrynnik, Alexey and Andreychuk, Anton and Yakovlev, Konstantin and Panov, Aleksandr I., 2022. POGEMA: Partially Observable Grid Environment for Multiple Agents. 
 
 
