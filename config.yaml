@@ -12,3 +12,18 @@ dhc:
   communication:
     num_comm_layers: 2
     num_comm_heads: 2
+
+environment:
+  map_length: 50
+  num_agents: 2
+  obs_radius: 4
+  reward_fn: 
+    move: -0.075
+    stay_on_goal: 0
+    stay_off_goal: -0.075
+    collision: -0.5
+    finish: 3
+
+  init_env_settings: !!python/tuple [1, 10]
+  obs_shape: !!python/tuple [6, 9, 9]
+  action_dim: 5
