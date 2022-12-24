@@ -1,7 +1,7 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import random
 from typing import List, Union
-import numpy as np
-import matplotlib.pyplot as plt
 
 plt.ion()
 from matplotlib import colors

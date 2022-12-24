@@ -11,7 +11,6 @@ else:
 
 from pathfinding.settings import yaml_data as settings
 
-
 DHC_CONFIG = settings["dhc"]
 
 
