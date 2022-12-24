@@ -21,9 +21,7 @@ class SumTree:
     def sum(self):
         assert (
             np.sum(self.tree[-self.capacity :]) - self.tree[0] < 0.1
-        ), "sum is {} but root is {}".format(
-            np.sum(self.tree[-self.capacity :]), self.tree[0]
-        )
+        ), f"sum is {np.sum(self.tree[-self.capacity :])} but root is {self.tree[0]}"
         return self.tree[0]
 
     def __getitem__(self, idx: int):
@@ -50,7 +48,7 @@ class SumTree:
         priorities = self.tree[idxes]
         idxes -= self.capacity - 1
 
-        assert np.all(priorities > 0), "idx: {}, priority: {}".format(idxes, priorities)
+        assert np.all(priorities > 0), f"idx: {idxes}, priority: {priorities}"
         assert np.all(idxes >= 0) and np.all(idxes < self.capacity)
 
         return idxes, priorities
@@ -67,9 +65,7 @@ class SumTree:
         # check
         assert (
             np.sum(self.tree[-self.capacity :]) - self.tree[0] < 0.1
-        ), "sum is {} but root is {}".format(
-            np.sum(self.tree[-self.capacity :]), self.tree[0]
-        )
+        ), f"sum is {np.sum(self.tree[-self.capacity :])} but root is {self.tree[0]}"
 
 
 class LocalBuffer:
