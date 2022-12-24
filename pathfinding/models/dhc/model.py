@@ -215,7 +215,7 @@ class Network(nn.Module):
         pos_mat = (agents_pos.unsqueeze(1) - agents_pos.unsqueeze(0)).abs()
         dist_mat = (pos_mat[:, :, 0] ** 2 + pos_mat[:, :, 1] ** 2).sqrt()
         # mask out agents that out of range of FOV
-        in_obs_mask = (pos_mat <= DHC_CONFIG["obs_radius"]).all(2)
+        in_obs_mask = (pos_mat <= DHC_CONFIG["observation_radius"]).all(2)
         # mask out agents that are far away
         _, ranking = dist_mat.topk(
             min(self.max_comm_agents, num_agents), dim=1, largest=False
