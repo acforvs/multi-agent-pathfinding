@@ -180,9 +180,7 @@ class GlobalBuffer:
 
                 assert (
                     local_idx < self.size_buf[global_idx]
-                ), "index is {} but size is {}".format(
-                    local_idx, self.size_buf[global_idx]
-                )
+                ), f"index is {local_idx} but size is {self.size_buf[global_idx]}"
 
                 conf_seq_len = WRK_CONFIG["seq_len"]
                 fwd_steps = WRK_CONFIG["forward_steps"]
@@ -322,8 +320,8 @@ class GlobalBuffer:
             )
 
     def stats(self, interval: int):
-        print("buffer update speed: {}/s".format(self.counter / interval))
-        print("buffer size: {}".format(self.size))
+        print(f"buffer update speed: {self.counter / interval}/s")
+        print(f"buffer size: {self.size}")
 
         print("  ", end="")
         for i in range(
@@ -352,7 +350,6 @@ class GlobalBuffer:
             print()
 
         for key, val in self.stat_dict.copy().items():
-            # print('{}: {}/{}'.format(key, sum(val), len(val)))
             if len(val) == 200 and sum(val) >= 200 * WRK_CONFIG["pass_rate"]:
                 # add number of agents
                 add_agent_key = (key[0] + 1, key[1])
@@ -398,7 +395,7 @@ class GlobalBuffer:
 
 @ray.remote(num_cpus=1, num_gpus=1)
 class Learner:
-    def __init__(self, buffer: GlobalBuffer):
+    def __init__(self, buffer: GlobalBuffer, training_steps=10000):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = Network()
         self.model.to(self.device)
@@ -412,6 +409,8 @@ class Learner:
         self.last_counter = 0
         self.done = False
         self.loss = 0
+
+        self.steps = training_steps
 
         self.store_weights()
 
@@ -436,7 +435,7 @@ class Learner:
             and self.counter < WRK_CONFIG["training_times"]
         ):
 
-            for i in range(1, 10001):
+            for i in range(1, self.steps + 1):
 
                 data_id = ray.get(self.buffer.get_data.remote())
                 data = ray.get(data_id)
@@ -518,7 +517,7 @@ class Learner:
                 if i % WRK_CONFIG["save_interval"] == 0:
                     torch.save(
                         self.model.state_dict(),
-                        os.path.join("./models", "{}.pth".format(self.counter)),
+                        os.path.join("./models", f"{self.counter}.pth"),
                     )
 
         self.done = True
@@ -529,10 +528,8 @@ class Learner:
         return flag * abs_td_error.pow(2) * 0.5 + (1 - flag) * (abs_td_error - 0.5)
 
     def stats(self, interval: int):
-        print("number of updates: {}".format(self.counter))
-        print(
-            "update speed: {}/s".format((self.counter - self.last_counter) / interval)
-        )
+        print(f"number of updates: {self.counter}")
+        print(f"update speed: {(self.counter - self.last_counter) / interval}/s")
         if self.counter != self.last_counter:
             print("loss: {:.4f}".format(self.loss / (self.counter - self.last_counter)))
 
