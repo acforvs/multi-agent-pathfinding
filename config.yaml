@@ -27,3 +27,31 @@ environment:
   init_env_settings: !!python/tuple [1, 10]
   obs_shape: !!python/tuple [6, 9, 9]
   action_dim: 5
+
+buffer:
+  max_episode_length: 256
+  obs_shape: !!python/tuple [6, 9, 9]
+  hidden_dim: 256
+  action_dim: 5
+  forward_steps: 2
+
+worker:
+  episode_capacity: 2048
+  max_episode_length: 256
+  init_env_settings: !!python/tuple [1, 10]
+  max_comm_agents: 3
+  prioritized_replay_alpha: 0.6
+  prioritized_replay_beta: 0.4
+  max_num_agents: 2
+  obs_shape: !!python/tuple [6, 9, 9]
+  hidden_dim: 256
+  batch_size: 192
+  forward_steps: 2
+  seq_len: 16
+  max_map_length: 40
+  pass_rate: 0.9
+  learning_starts: 50000
+  training_times: 600000
+  target_network_update_freq: 2000
+  save_interval: 2000
+  actor_update_steps: 400
