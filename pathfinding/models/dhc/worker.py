@@ -1,19 +1,20 @@
-import time
-import random
+import numpy as np
 import os
-from copy import deepcopy
-from typing import Tuple
-import threading
+import random
 import ray
+import threading
+import time
 import torch
 import torch.nn as nn
+from copy import deepcopy
+from torch.cuda.amp import GradScaler
 from torch.optim import Adam
 from torch.optim.lr_scheduler import MultiStepLR
-from torch.cuda.amp import GradScaler
-import numpy as np
-from pathfinding.models.dhc.model import Network
+from typing import Tuple
+
 from pathfinding.environment import Environment
 from pathfinding.models.dhc.buffer import SumTree, LocalBuffer
+from pathfinding.models.dhc.model import Network
 from pathfinding.settings import yaml_data as settings
 
 WRK_CONFIG = settings["worker"]
