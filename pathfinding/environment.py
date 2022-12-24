@@ -79,7 +79,7 @@ class Environment:
         self,
         num_agents: int = ENV_CONFIG["init_env_settings"][0],
         map_length: int = ENV_CONFIG["init_env_settings"][1],
-        obs_radius: int = ENV_CONFIG["obs_radius"],
+        obs_radius: int = ENV_CONFIG["observation_radius"],
         reward_fn: dict = ENV_CONFIG["reward_fn"],
         fix_density=None,
         curriculum=False,

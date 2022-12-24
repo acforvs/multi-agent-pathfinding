@@ -17,7 +17,8 @@ from pathfinding.models.dhc.buffer import SumTree, LocalBuffer
 from pathfinding.models.dhc.model import Network
 from pathfinding.settings import yaml_data as settings
 
-WRK_CONFIG = settings["worker"]
+WRK_CONFIG = settings["dhc"]["worker"]
+GENERAL_CONFIG = settings["dhc"]
 
 
 @ray.remote(num_cpus=1)
@@ -30,7 +31,7 @@ class GlobalBuffer:
         max_comm_agents=WRK_CONFIG["max_comm_agents"],
         alpha=WRK_CONFIG["prioritized_replay_alpha"],
         beta=WRK_CONFIG["prioritized_replay_beta"],
-        max_num_agents=WRK_CONFIG["max_num_agents"],
+        max_num_agents=GENERAL_CONFIG["max_num_agents"],
     ):
 
         self.capacity = episode_capacity
@@ -53,7 +54,7 @@ class GlobalBuffer:
             (
                 (local_buffer_capacity + 1) * episode_capacity,
                 max_num_agents,
-                *WRK_CONFIG["obs_shape"],
+                *GENERAL_CONFIG["observation_shape"],
             ),
             dtype=np.bool,
         )
@@ -67,7 +68,7 @@ class GlobalBuffer:
             (
                 local_buffer_capacity * episode_capacity,
                 max_num_agents,
-                WRK_CONFIG["hidden_dim"],
+                GENERAL_CONFIG["hidden_dim"],
             ),
             dtype=np.float16,
         )
@@ -92,7 +93,7 @@ class GlobalBuffer:
     def prepare_data(self):
         while True:
             if len(self.batched_data) <= 4:
-                data = self.sample_batch(WRK_CONFIG["batch_size"])
+                data = self.sample_batch(GENERAL_CONFIG["batch_size"])
                 data_id = ray.put(data)
                 self.batched_data.append(data_id)
             else:
@@ -102,7 +103,7 @@ class GlobalBuffer:
 
         if len(self.batched_data) == 0:
             print("no prepared data")
-            data = self.sample_batch(WRK_CONFIG["batch_size"])
+            data = self.sample_batch(GENERAL_CONFIG["batch_size"])
             data_id = ray.put(data)
             return data_id
         else:
@@ -202,7 +203,10 @@ class GlobalBuffer:
                         + steps
                     ]
                     hidden = np.zeros(
-                        (WRK_CONFIG["max_num_agents"], WRK_CONFIG["hidden_dim"]),
+                        (
+                            GENERAL_CONFIG["max_num_agents"],
+                            GENERAL_CONFIG["hidden_dim"],
+                        ),
                         dtype=np.float16,
                     )
                 elif local_idx == conf_seq_len - 1:
@@ -222,7 +226,10 @@ class GlobalBuffer:
                         + steps
                     ]
                     hidden = np.zeros(
-                        (WRK_CONFIG["max_num_agents"], WRK_CONFIG["hidden_dim"]),
+                        (
+                            GENERAL_CONFIG["max_num_agents"],
+                            GENERAL_CONFIG["hidden_dim"],
+                        ),
                         dtype=np.float16,
                     )
                 else:
@@ -331,7 +338,7 @@ class GlobalBuffer:
         print()
 
         for num_agents in range(
-            WRK_CONFIG["init_env_settings"][0], WRK_CONFIG["max_num_agents"] + 1
+            WRK_CONFIG["init_env_settings"][0], GENERAL_CONFIG["max_num_agents"] + 1
         ):
             print("{:2d}".format(num_agents), end="")
             for map_len in range(
@@ -354,7 +361,7 @@ class GlobalBuffer:
                 # add number of agents
                 add_agent_key = (key[0] + 1, key[1])
                 if (
-                    add_agent_key[0] <= WRK_CONFIG["max_num_agents"]
+                    add_agent_key[0] <= GENERAL_CONFIG["max_num_agents"]
                     and add_agent_key not in self.stat_dict
                 ):
                     self.stat_dict[add_agent_key] = []
@@ -379,7 +386,7 @@ class GlobalBuffer:
 
     def check_done(self):
 
-        for i in range(WRK_CONFIG["max_num_agents"]):
+        for i in range(GENERAL_CONFIG["max_num_agents"]):
             if (i + 1, WRK_CONFIG["max_map_length"]) not in self.stat_dict:
                 return False
 

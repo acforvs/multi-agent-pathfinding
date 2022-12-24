@@ -2,7 +2,8 @@ import numpy as np
 
 from pathfinding.settings import yaml_data as settings
 
-BUF_CONFIG = settings["buffer"]
+BUF_CONFIG = settings["dhc"]["buffer"]
+GENERAL_CONFIG = settings["dhc"]
 
 
 class SumTree:
@@ -91,8 +92,8 @@ class LocalBuffer:
         map_len: int,
         init_obs: np.ndarray,
         capacity: int = BUF_CONFIG["max_episode_length"],
-        obs_shape=BUF_CONFIG["obs_shape"],
-        hidden_dim=BUF_CONFIG["hidden_dim"],
+        obs_shape=GENERAL_CONFIG["observation_shape"],
+        hidden_dim=GENERAL_CONFIG["hidden_dim"],
         action_dim=BUF_CONFIG["action_dim"],
     ):
         """
