@@ -522,11 +522,10 @@ class Learner:
                     self.tar_model.load_state_dict(self.model.state_dict())
 
                 if i % WRK_CONFIG["save_interval"] == 0:
-                    if not os.path.exists("./models"):
-                        os.path.makedirs("./models")
+                    os.path.makedirs(os.path.join(".", "models", exist_ok=True))
                     torch.save(
                         self.model.state_dict(),
-                        os.path.join("./models", f"{self.counter}.pth"),
+                        os.path.join(".", "models", f"{self.counter}.pth"),
                     )
 
         self.done = True
@@ -584,7 +583,7 @@ class Actor:
                 q_val[0], actions[0], rewards[0], next_obs, hidden, comm_mask
             )
 
-            if done == False and self.env.steps < self.max_episode_length:
+            if done is False and self.env.steps < self.max_episode_length:
                 obs, pos = next_obs, next_pos
             else:
                 # finish and send buffer

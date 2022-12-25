@@ -1,7 +1,8 @@
+import os
 import yaml
 
 
-with open("./config.yaml", "r") as yaml_file:
+with open(os.path.join(".", "config.yaml"), "r") as yaml_file:
     yaml_data = yaml.load(yaml_file, Loader=yaml.FullLoader)
 
 
