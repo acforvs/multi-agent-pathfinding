@@ -9,6 +9,18 @@
 1. Install [Poetry](https://python-poetry.org)
 2. Run [poetry install](https://python-poetry.org/docs/cli/#install) to install the dependencies
 
+If you see ``Failed to create the collection: Prompt dismissed..`` this error when trying to run `poetry install`, consider executing this line first:
+```bash
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+```
+
+## Requirements
+In order for `models.dhc.train` to be successfully run, you have to have a machine equipped with 1 GPU and several CPUs.
+Consider having `num_cpus - 2` actors configured through the `dhc.train.num_actors` in `config.yaml`
+
+**Attention: We do not guarantee the desired performance on a non-GPU machine.**
+
+
 ## Contributing
 1. Use [black](https://github.com/psf/black) to ensure that the codestyle remains great
 ```shell
