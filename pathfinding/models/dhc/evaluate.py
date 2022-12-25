@@ -36,7 +36,7 @@ def _generate_test_filename(length: int, num_agents: int, density: float, ext="p
 
 
 def generate_test_suits(tests_config, repeat_for: int):
-    os.makedirs("./test_cases", exist_ok=True)
+    os.makedirs(os.path.join(".", test_cases), exist_ok=True)
     for map_length, num_agents, density in tests_config:
         env = Environment(
             num_agents=num_agents, map_length=map_length, fix_density=density
@@ -48,7 +48,8 @@ def generate_test_suits(tests_config, repeat_for: int):
             )
             env.reset(num_agents=num_agents, map_length=map_length)
 
+        filename = _generate_test_filename(map_length, num_agents, density)
         with open(
-            _generate_test_filename(map_length, num_agents, density), "wb"
+            os.path.join(".", test_cases, filename), "wb"
         ) as file:
             pickle.dump(tests, file)
