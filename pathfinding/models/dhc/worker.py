@@ -26,7 +26,7 @@ class GlobalBuffer:
     def __init__(
         self,
         episode_capacity=WRK_CONFIG["episode_capacity"],
-        local_buffer_capacity=WRK_CONFIG["max_episode_length"],
+        local_buffer_capacity=GENERAL_CONFIG["max_episode_length"],
         init_env_settings=WRK_CONFIG["init_env_settings"],
         max_comm_agents=WRK_CONFIG["max_comm_agents"],
         alpha=WRK_CONFIG["prioritized_replay_alpha"],
