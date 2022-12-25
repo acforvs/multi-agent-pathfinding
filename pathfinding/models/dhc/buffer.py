@@ -91,7 +91,7 @@ class LocalBuffer:
         num_agents: int,
         map_len: int,
         init_obs: np.ndarray,
-        capacity: int = BUF_CONFIG["max_episode_length"],
+        capacity: int = GENERAL_CONFIG["max_episode_length"],
         obs_shape=GENERAL_CONFIG["observation_shape"],
         hidden_dim=GENERAL_CONFIG["hidden_dim"],
         action_dim=BUF_CONFIG["action_dim"],

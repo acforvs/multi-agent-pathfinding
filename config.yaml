@@ -8,19 +8,18 @@ dhc:
   batch_size: 192
   max_num_agents: 2
   latent_dim: 784  # 16 * 7 * 7, do not forget to change if the observation_shape is changed
+  max_episode_length: 256
 
   communication:
     num_comm_layers: 2
     num_comm_heads: 2
 
   buffer:
-    max_episode_length: 256
     action_dim: 5
     forward_steps: 2
 
   worker:
     episode_capacity: 2048
-    max_episode_length: 256
     init_env_settings: !!python/tuple [ 1, 10 ]
     max_comm_agents: 3
     prioritized_replay_alpha: 0.6
