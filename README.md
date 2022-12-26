@@ -78,7 +78,7 @@ For example, by running
 ```shell
 poetry run python3 pathfinding/models/dhc/evaluate.py test_model '[(40, 16, 0.3), (80, 4, 0.1)]' 60000
 ```
-you will run benchmark the `models/60000.pth` on the provided test cases 
+you will benchmark the `models/60000.pth` on the provided test cases 
 
 **Attention: the test cases must be generated first!** 
 
