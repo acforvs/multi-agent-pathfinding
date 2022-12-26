@@ -128,7 +128,7 @@ class CommBlock(nn.Module):
         if len(comm_idx) > 1:
             update_mask = update_mask.unsqueeze(2)
 
-        attn_mask = comm_mask is False
+        attn_mask = comm_mask == False
 
         for _ in range(self.num_layers):
 
