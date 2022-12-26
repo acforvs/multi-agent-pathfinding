@@ -522,7 +522,7 @@ class Learner:
                     self.tar_model.load_state_dict(self.model.state_dict())
 
                 if i % WRK_CONFIG["save_interval"] == 0:
-                    os.path.makedirs(os.path.join(".", "models", exist_ok=True))
+                    os.makedirs(os.path.join(".", "models"), exist_ok=True)
                     torch.save(
                         self.model.state_dict(),
                         os.path.join(".", "models", f"{self.counter}.pth"),
