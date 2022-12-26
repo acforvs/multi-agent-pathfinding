@@ -1,4 +1,5 @@
 import os
+import fire
 import numpy as np
 import pickle
 
@@ -35,8 +36,13 @@ def _generate_test_filename(length: int, num_agents: int, density: float, ext="p
     return f"{length}length_{num_agents}agents_{density}density.{ext}"
 
 
+def _tests_dir_path():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    return os.path.join(dir_path, "test_cases")
+
+
 def generate_test_suits(tests_config, repeat_for: int):
-    os.makedirs(os.path.join(".", test_cases), exist_ok=True)
+    os.makedirs(_tests_dir_path(), exist_ok=True)
     for map_length, num_agents, density in tests_config:
         env = Environment(
             num_agents=num_agents, map_length=map_length, fix_density=density
@@ -49,5 +55,9 @@ def generate_test_suits(tests_config, repeat_for: int):
             env.reset(num_agents=num_agents, map_length=map_length)
 
         filename = _generate_test_filename(map_length, num_agents, density)
-        with open(os.path.join(".", test_cases, filename), "wb") as file:
+        with open(os.path.join(_tests_dir_path(), filename), "wb") as file:
             pickle.dump(tests, file)
+
+
+if __name__ == "__main__":
+    fire.Fire()
