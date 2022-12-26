@@ -70,7 +70,10 @@ def test_group(network, test_group):
     print(f"test group: {length} length {num_agents} agents {density} density")
 
     with open(
-        os.path.join(_tests_dir_path(), _generate_test_filename(length, num_agents, density, ext="pth")),
+        os.path.join(
+            _tests_dir_path(),
+            _generate_test_filename(length, num_agents, density, ext="pth"),
+        ),
         "rb",
     ) as f:
         tests = pickle.load(f)
@@ -108,7 +111,9 @@ def test_model(
     network.eval()
     device = torch.device("cpu")
     network.to(device)
-    state_dict = torch.load(os.path.join(".", "models", f"{model_number}.pth"), map_location=device)
+    state_dict = torch.load(
+        os.path.join(".", "models", f"{model_number}.pth"), map_location=device
+    )
     network.load_state_dict(state_dict)
     network.eval()
     network.share_memory()
