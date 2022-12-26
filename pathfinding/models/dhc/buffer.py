@@ -159,8 +159,15 @@ class LocalBuffer:
         # caculate td errors for prioritized experience replay
         td_errors = np.zeros(self.capacity, dtype=np.float32)
 
-        q_max_idx = np.array([min(i + configs.forward_steps, self.size) for i in range(self.size)])
-        gamma = np.array([0.99 ** min(configs.forward_steps, self.size - i) for i in range(self.size)])
+        q_max_idx = np.array(
+            [min(i + configs.forward_steps, self.size) for i in range(self.size)]
+        )
+        gamma = np.array(
+            [
+                0.99 ** min(configs.forward_steps, self.size - i)
+                for i in range(self.size)
+            ]
+        )
         q_max = np.max(self.q_buf[q_max_idx], axis=1) * gamma
 
         fwd_steps = BUF_CONFIG["forward_steps"]

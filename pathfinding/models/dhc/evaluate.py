@@ -49,7 +49,5 @@ def generate_test_suits(tests_config, repeat_for: int):
             env.reset(num_agents=num_agents, map_length=map_length)
 
         filename = _generate_test_filename(map_length, num_agents, density)
-        with open(
-            os.path.join(".", test_cases, filename), "wb"
-        ) as file:
+        with open(os.path.join(".", test_cases, filename), "wb") as file:
             pickle.dump(tests, file)
