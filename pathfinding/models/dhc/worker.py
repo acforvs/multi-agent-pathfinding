@@ -558,7 +558,7 @@ class Actor:
         self.epsilon = epsilon
         self.learner = learner
         self.global_buffer = buffer
-        self.max_episode_length = WRK_CONFIG["max_episode_length"]
+        self.max_episode_length = GENERAL_CONFIG["max_episode_length"]
         self.counter = 0
 
     def run(self):
