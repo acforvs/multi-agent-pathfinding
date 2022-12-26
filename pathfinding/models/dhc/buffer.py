@@ -161,8 +161,15 @@ class LocalBuffer:
 
         fwd_steps = BUF_CONFIG["forward_steps"]
 
-        q_max_idx = np.array([min(i + fwd_steps, self.size) for i in range(self.size)])
-        gamma = np.array([0.99 ** min(fwd_steps, self.size - i) for i in range(self.size)])
+        q_max_idx = np.array(
+            [min(i + fwd_steps, self.size) for i in range(self.size)]
+        )
+        gamma = np.array(
+            [
+                0.99 ** min(fwd_steps, self.size - i)
+                for i in range(self.size)
+            ]
+        )
         q_max = np.max(self.q_buf[q_max_idx], axis=1) * gamma
 
         ret = self.rew_buf.tolist() + [0 for _ in range(fwd_steps - 1)]
