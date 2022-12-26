@@ -93,8 +93,8 @@ def test_group(network, test_group):
 
 
 def test_model(
-    model_number=16001,
-    test_groups=[
+    model_number = 16001,
+    test_groups = [
         (40, 4, 0.3),
         (40, 8, 0.3),
         (40, 16, 0.3),
