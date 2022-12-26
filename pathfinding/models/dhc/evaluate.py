@@ -32,7 +32,12 @@ def test_one_case(args):
         (obs, pos), _, done, _ = env.step(actions)
         steps += 1
 
-    return np.array_equal(env.agents_pos, env.goals_pos), steps
+    pos_equality = env.agents_pos == env.goals_pos
+    soft_equality = (
+        pos_equality[:, 0] * pos_equality[:, 1]
+    ).sum() / env.agents_pos.shape[0]
+
+    return np.array_equal(env.agents_pos, env.goals_pos), steps, soft_equality
 
 
 def _generate_test_filename(length: int, num_agents: int, density: float, ext="pkl"):
@@ -72,7 +77,7 @@ def test_group(network, test_group):
     with open(
         os.path.join(
             _tests_dir_path(),
-            _generate_test_filename(length, num_agents, density, ext="pth"),
+            _generate_test_filename(length, num_agents, density),
         ),
         "rb",
     ) as f:
@@ -81,20 +86,20 @@ def test_group(network, test_group):
     tests = [(*test, network) for test in tests]
     ret = pool.map(test_one_case, tests)
 
-    success = 0
-    avg_step = 0
-    for i, j in ret:
-        success += i
-        avg_step += j
+    success, avg_step, soft_equality = 0, 0, 0
+    for is_successful, ttl_steps, soft_equal in ret:
+        success += is_successful
+        avg_step += ttl_steps
+        soft_equality += soft_equal
 
-    print(f"success rate: {success/len(ret)*100:.2f}%")
+    print(f"success rate: {success/len(ret) * 100:.2f}%")
+    print(f"soft-success rate: {soft_equality / len(ret) * 100:.2f}%")
     print(f"average step: {avg_step/len(ret)}")
     print()
 
 
 def test_model(
-    model_number = 16001,
-    test_groups = [
+    test_groups=[
         (40, 4, 0.3),
         (40, 8, 0.3),
         (40, 16, 0.3),
@@ -106,6 +111,7 @@ def test_model(
         (80, 32, 0.3),
         (80, 64, 0.3),
     ],
+    model_number=60000,
 ):
     network = DHCNetwork()
     network.eval()
