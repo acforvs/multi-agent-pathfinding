@@ -154,6 +154,7 @@ We used 20 CPU cores, 18 were used for the actors, additionally, 2 cores were us
 ![visAfter](./static/DHC_10x10_4_good.gif)
 ![visAfter](./static/DHC_40x40_4_good.gif)
 ![visAfter](./static/DHC_40x40_16_good.gif)
+![visAfter](./static/DHC_40x40_16_dense.gif)
 
 
 ## Contributing
