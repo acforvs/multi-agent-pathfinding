@@ -48,8 +48,6 @@ def test_group(test_group, test_generation_fn, singe_test_fn):
         "rb",
     ) as f:
         tests = pickle.load(f)
-    print(len(tests))
-    return
     tests = test_generation_fn(tests)
     ret = pool.map(singe_test_fn, tests)
 
