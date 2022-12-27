@@ -1,14 +1,12 @@
+import numpy as np
 import os
 import random
-import time
-
-import torch
-import numpy as np
 import ray
+import time
+import torch
 
 from pathfinding.models.dhc import GlobalBuffer, Learner, Actor
 from pathfinding.settings import yaml_data as settings
-
 
 TRAIN_CONFIG = settings["dhc"]["train"]
 

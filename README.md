@@ -45,14 +45,21 @@ export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 ![visAfter](./static/DHC_architecture.png)  
 ![visAfter](./static/DHC_training.png) 
 
+### M*
+
+**Multi-dimensional A***
+
+![visAfter](./static/M_star.png)  
+
+---
+**Details:**
+
 <details>
-    <summary>DHC</summary>
+    <summary>Generate test cases</summary>
 
-#### Benchmarking 
-
-1. **To generate test cases, run** 
+**To generate test cases, run** 
 ```shell
-poetry run python3 pathfinding/models/dhc/evaluate.py generate_test_suits TESTS_DESCR REPEAT_FOR
+poetry run python3 pathfinding/utils.py generate_test_suits TESTS_DESCR REPEAT_FOR
 ```
 where
 * TESTS_DESCR is a string of the format `'[(map_length, num_agents, density), ...]'`
@@ -60,13 +67,22 @@ where
 
 For example, by running
 ```shell
-poetry run python3 pathfinding/models/dhc/evaluate.py generate_test_suits '[(40, 16, 0.3), (80, 4, 0.1)]' 10
+poetry run python3 pathfinding/utils.py generate_test_suits '[(40, 16, 0.3), (80, 4, 0.1)]' 10
 ```
 you will create 20 test cases in total:
 * 10 cases with a 40x40 map with a density of 30% + 16 agents in it
 * 10 cases with a 80x80 map with a density of 10% + 4 agents in it
 
-2. **To run the generated test suite, run**
+</details>
+
+
+
+<details>
+    <summary>DHC</summary>
+
+#### Benchmarking 
+
+**To run the generated test suite, run**
 ```shell
 poetry run python3 pathfinding/models/dhc/evaluate.py test_model TESTS_DESCR MODEL_ID
 ```
@@ -96,10 +112,48 @@ The `models` dir will be created afterwards where the weights of the intermediat
 
 </details>
 
+
+
+<details>
+    <summary>M*</summary>
+
+#### Benchmarking 
+
+**To run the generated test suite, run**
+```shell
+poetry run python3 pathfinding/models/mstar/evaluate.py test_model TESTS_DESCR
+```
+where
+* TESTS_DESCR is a string of the format `'[(map_length, num_agents, density), ...]'` (you may want to copy this line from the generation command)
+For example, by running
+
+```shell
+poetry run python3 pathfinding/models/mstar/evaluate.py test_model '[(10, 4, 0.1), (20, 4, 0.1)]'
+```
+you will benchmark the Multi-dimensional A* algorithm on the provided test cases 
+
+**Attention: the test cases must be generated first!** 
+
+**While we aim at supporting different platforms, the current implementation requires the call to be successful on your platform.** 
+
+**Please ensure this is the case before running any benchmark for M***
+```shell
+g++ -O2 -std=c++17 -o 'pathfinding/models/mstar/main' 'pathfinding/models/mstar/main.cpp'
+```
+
+</details>
+
 ## Our setup
 The DHC network was trained on a single [NVIDIA TESLA T4 GPU](https://www.nvidia.com/en-us/data-center/tesla-t4/) for 7 hours.
 
 We used 20 CPU cores, 18 were used for the actors, additionally, 2 cores were used for the Learner and GlobalBuffer all together.
+
+
+## DHC Results
+
+![visAfter](./static/DHC_10x10_4_good.gif)
+![visAfter](./static/DHC_40x40_4_good.gif)
+![visAfter](./static/DHC_40x40_16_good.gif)
 
 
 ## Contributing
