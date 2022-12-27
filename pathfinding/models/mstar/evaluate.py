@@ -11,7 +11,7 @@ from pathfinding.utils import test_group, calculate_metrics
 GENERAL_CONFIG = settings["dhc"]
 
 
-def _prepare(filename="main.cpp"):
+def _prepare(filename="main_mstar.cpp"):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     prepare_cpp(
         os.path.join(dir_path, filename), os.path.join(dir_path, ".", "main")
