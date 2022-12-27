@@ -110,6 +110,18 @@ poetry run python3 pathfinding/models/dhc/train.py
 
 The `models` dir will be created afterwards where the weights of the intermediate models will be saved.
 
+#### Visualizing
+
+1. To visualize the results, run
+```shell
+poetry run python3 pathfinding/models/dhc/visualize.py MODEL_ID TEST_NAME TEST_ID
+```
+where
+* MODEL_ID is the name of the file from the `models` dir
+* TEST_NAME is the name of the file with tests, for example `80length_32agents_0.3density.pkl`
+* TEST_ID [optional], id of the test from the provided test suite
+
+
 </details>
 
 
