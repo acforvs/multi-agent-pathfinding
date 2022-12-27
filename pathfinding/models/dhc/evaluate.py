@@ -1,20 +1,18 @@
-import os
 import fire
 import numpy as np
+import os
 import pickle
 import torch
-import multiprocessing as mp
 
-from pathfinding.models.dhc import DHCNetwork
 from pathfinding.environment import Environment
-
+from pathfinding.models.dhc import DHCNetwork
 from pathfinding.settings import yaml_data as settings
-
+from pathfinding.utils import test_group, calculate_metrics
 
 GENERAL_CONFIG = settings["dhc"]
 
 
-def test_one_case(args):
+def _test_one_case(args):
     map, agents_pos, goals_pos, network = args
     env = Environment()
 
@@ -32,70 +30,7 @@ def test_one_case(args):
         (obs, pos), _, done, _ = env.step(actions)
         steps += 1
 
-    pos_equality = env.agents_pos == env.goals_pos
-    soft_equality = (
-        pos_equality[:, 0] * pos_equality[:, 1]
-    ).sum() / env.agents_pos.shape[0]
-
-    return np.array_equal(env.agents_pos, env.goals_pos), steps, soft_equality
-
-
-def _generate_test_filename(length: int, num_agents: int, density: float, ext="pkl"):
-    return f"{length}length_{num_agents}agents_{density}density.{ext}"
-
-
-def _tests_dir_path():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(dir_path, "test_cases")
-
-
-def generate_test_suits(tests_config, repeat_for: int):
-    os.makedirs(_tests_dir_path(), exist_ok=True)
-    for map_length, num_agents, density in tests_config:
-        env = Environment(
-            num_agents=num_agents, map_length=map_length, fix_density=density
-        )
-        tests = []
-        for _ in range(repeat_for):
-            tests.append(
-                (np.copy(env.map), np.copy(env.agents_pos), np.copy(env.goals_pos))
-            )
-            env.reset(num_agents=num_agents, map_length=map_length)
-
-        filename = _generate_test_filename(map_length, num_agents, density)
-        with open(os.path.join(_tests_dir_path(), filename), "wb") as file:
-            pickle.dump(tests, file)
-
-
-def test_group(network, test_group):
-    pool = mp.Pool(mp.cpu_count())
-
-    length, num_agents, density = test_group
-
-    print(f"test group: {length} length {num_agents} agents {density} density")
-
-    with open(
-        os.path.join(
-            _tests_dir_path(),
-            _generate_test_filename(length, num_agents, density),
-        ),
-        "rb",
-    ) as f:
-        tests = pickle.load(f)
-
-    tests = [(*test, network) for test in tests]
-    ret = pool.map(test_one_case, tests)
-
-    success, avg_step, soft_equality = 0, 0, 0
-    for is_successful, ttl_steps, soft_equal in ret:
-        success += is_successful
-        avg_step += ttl_steps
-        soft_equality += soft_equal
-
-    print(f"success rate: {success/len(ret) * 100:.2f}%")
-    print(f"soft-success rate: {soft_equality / len(ret) * 100:.2f}%")
-    print(f"average step: {avg_step/len(ret)}")
-    print()
+    return calculate_metrics(env, steps)
 
 
 def test_model(
@@ -124,8 +59,11 @@ def test_model(
     network.eval()
     network.share_memory()
 
+    def _test_generation_fn(tests):
+        return [(*test, network) for test in tests]
+
     for group in test_groups:
-        test_group(network, group)
+        test_group(group, _test_generation_fn, _test_one_case)
 
 
 if __name__ == "__main__":
