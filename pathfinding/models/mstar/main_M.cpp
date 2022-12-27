@@ -250,13 +250,16 @@ vector<vector<int>> Mstar_multi(vector<vector<int>> mp, vector<Pt> starts, vecto
             for (int y = 0; y < m; y++) {
                 if (grid.mp[x][y] == 0) {
                     Pt st = {x, y};
-                    vector<int> gen = Astar_multi(mp, {st}, {fins[i]})[0];
+                    auto haha = Astar_multi(mp, {st}, {fins[i]});
                     Pt nxtv = {x, y};
-                    if (gen.empty()) nxtv = {x, y};
-                    else if (gen[0] == 1) nxtv = {x - 1, y};
-                    else if (gen[0] == 2) nxtv = {x + 1, y};
-                    else if (gen[0] == 3) nxtv = {x, y - 1};
-                    else nxtv = {x, y + 1};
+                    if (!haha.empty()) {
+                        vector<int> gen = haha[0];
+                        if (gen.empty()) nxtv = {x, y};
+                        else if (gen[0] == 1) nxtv = {x - 1, y};
+                        else if (gen[0] == 2) nxtv = {x + 1, y};
+                        else if (gen[0] == 3) nxtv = {x, y - 1};
+                        else nxtv = {x, y + 1};
+                    }
                     nxt[i][st] = nxtv; // next vertex from st to finish[i] in optimal path
                 }
             }
